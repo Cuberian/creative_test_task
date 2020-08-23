@@ -8,8 +8,8 @@
             <p class="card-text">Количество комнат: {{ flatObj.attributes.rooms }}</p>
         </div>
             <div class="card-footer_block">
-                <button class="btn" :class="{'btn-dark': !isLiked(flatObj.id), 'btn-danger': isLiked(flatObj.id)}">
-                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <button class="btn btn-lg" :class="{'btn-danger': liked, 'btn-light': !liked}" @click="ChangeLikedList()">
+                    <svg width="1.2em" height="1.2em" viewBox="0 0 16 16" class="bi bi-heart-fill" :style="{'fill': heartColor }" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                     </svg>
                 </button>
@@ -20,17 +20,26 @@
 
 <script>
     export default {
-        props: ['flatObj'],
+        props: ['flatObj', 'flatId'],
         name: "Card",
         data() {
             return {
-                isActive: true
-        }
-        },
-        computed: {
-            isLiked(id) {
-                return !this.$store.dispatch('findLikedFlat',id)
+                liked: false,
+                heartColor: 'white'
             }
+        },
+        methods: {
+            isLiked() {
+                this.liked = this.$store.state.liked.indexOf(this.flatObj.id) !== -1;
+                this.heartColor = this.liked ? 'white' : 'crimson';
+            },
+            ChangeLikedList() {
+                this.$store.commit('changeLiked',[this.flatObj.id,this.liked]);
+                this.isLiked();
+            }
+        },
+        created() {
+            this.isLiked()
         }
     }
 </script>

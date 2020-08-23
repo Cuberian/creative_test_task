@@ -5,17 +5,25 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        liked: [1],
         flats: [],
-        liked: [],
     },
     mutations: {
       fetchData(state, payload) {
+          console.log('start fetching');
             state.flats = payload;
-            console.log('complete');
+            console.log('dataIsFetched')
       },
-      addLiked(state,payload) {
-          if(state.liked.indexOf(payload) === -1)
-              state.liked.push(payload);
+      changeLiked(state,payload) {
+          let idIndex = state.liked.indexOf(payload[0]);
+          if(!payload[1]) {
+              if (idIndex === -1)
+                  state.liked.push(payload[0]);
+              console.log(state.liked)
+          } else {
+              state.liked.splice(idIndex, 1);
+              console.log(state.liked)
+          }
       }
     },
     getters: {
@@ -25,8 +33,8 @@ export default new Vuex.Store({
 
     },
     actions:{
-        findLikedFlat(state, payload) {
-            return state.liked.indexOf(payload) !== -1
+        async waitDataFetching(context,payload) {
+            await context.commit('fetchData', payload);
         }
     }
 

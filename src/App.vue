@@ -3,6 +3,7 @@
     <app-card class="flat-card"
               v-for="flat in flats"
               :key="flat.id"
+              :flatId="flat.id"
               :flatObj="flat"></app-card>
   </div>
 </template>
@@ -12,26 +13,29 @@
 
   export default {
     name: 'App',
-    computed:{
-      flats() {
-        return this.$store.getters.flats;
-      }
-    },
     methods: {
-      loadData(){
+       loadData(){
+        console.log('start loading');
         this.$http.get('http://localhost:3000/response').then(response => {
+          console.log('start json transform');
           return response.json();
         }).then(result => {
-          this.$store.commit('fetchData', result);
-          console.log(this.$store.state.flats[0]);
+          console.log('start waiting');
+          this.$store.dispatch('waitDataFetching', result);
         })
+      }
+    },
+    computed:{
+      flats() {
+        console.log('require flats');
+        return this.$store.getters.flats;
       }
     },
     components: {
       appCard
     },
     created(){
-      this.loadData();
+       this.loadData();
     }
   }
 </script>
