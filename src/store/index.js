@@ -29,8 +29,7 @@ export default new Vuex.Store({
               }
           } else {
               state.liked.splice(idIndex, 1);
-              Vue.http.delete('http://localhost:3000/liked/'+payload[0]).then( response => {
-              })
+              Vue.http.delete('http://localhost:3000/liked/'+payload[0])
           }
       }
     },
