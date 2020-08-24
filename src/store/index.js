@@ -1,28 +1,36 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import VueResource from 'vue-resource'
 
 Vue.use(Vuex);
+Vue.use(VueResource);
+
 
 export default new Vuex.Store({
     state: {
-        liked: [1],
+        liked: [],
         flats: [],
     },
     mutations: {
-      fetchData(state, payload) {
-          console.log('start fetching');
+      fetchFlatData(state, payload) {
             state.flats = payload;
-            console.log('dataIsFetched')
+      },
+      fetchLikedData(state, payload) {
+          payload.forEach(obj => {
+              state.liked.push(obj.id);
+          });
       },
       changeLiked(state,payload) {
           let idIndex = state.liked.indexOf(payload[0]);
           if(!payload[1]) {
-              if (idIndex === -1)
+              if (idIndex === -1) {
                   state.liked.push(payload[0]);
-              console.log(state.liked)
+                  Vue.http.post('http://localhost:3000/liked', {id:payload[0]})
+              }
           } else {
               state.liked.splice(idIndex, 1);
-              console.log(state.liked)
+              Vue.http.delete('http://localhost:3000/liked/'+payload[0]).then( response => {
+              })
           }
       }
     },
@@ -33,8 +41,11 @@ export default new Vuex.Store({
 
     },
     actions:{
-        async waitDataFetching(context,payload) {
-            await context.commit('fetchData', payload);
+        dataFlatFetching(context,payload) {
+            context.commit('fetchFlatData', payload);
+        },
+        dataLikedFetching(context,payload) {
+            context.commit('fetchLikedData', payload);
         }
     }
 
