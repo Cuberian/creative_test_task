@@ -2,12 +2,21 @@
 
 ## Project setup
 ```
-yarn install
+Требуется установить следующие зависимости для корректной работы проекта:
+npm install
+npm install vue-resource 
+npm install -g json-server
+npm install vuex
+```
+
+### For working with json-server
+```
+npm run server
 ```
 
 ### Compiles and hot-reloads for development
 ```
-yarn run serve
+npm run serve
 ```
 
 ### Compiles and minifies for production
