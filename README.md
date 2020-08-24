@@ -13,7 +13,7 @@ npm install -g json-server
 npm install vuex
 ```
 
-### For working with json-server
+### For working with json-server(Necessarily)
 ```
 npm run server
 ```
@@ -25,7 +25,7 @@ npm run serve
 
 ### Compiles and minifies for production
 ```
-yarn run build
+npm run build
 ```
 ## Instruction
 
